@@ -14,9 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+
 from django.urls import path, include
 from rest_framework import routers
+from django.http import JsonResponse
+import os
 from . import views
+
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet, basename='user')
@@ -25,8 +29,18 @@ router.register(r'activities', views.ActivityViewSet, basename='activity')
 router.register(r'workouts', views.WorkoutViewSet, basename='workout')
 router.register(r'leaderboard', views.LeaderboardViewSet, basename='leaderboard')
 
+# Helper endpoint to return the API base URL dynamically
+def api_base_url(request):
+    codespace_name = os.environ.get('CODESPACE_NAME')
+    if codespace_name:
+        url = f"https://{codespace_name}-8000.app.github.dev/api/"
+    else:
+        url = "http://localhost:8000/api/"
+    return JsonResponse({"api_base_url": url})
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/base-url/', api_base_url, name='api-base-url'),
     path('', views.api_root, name='api-root'),
 ]
