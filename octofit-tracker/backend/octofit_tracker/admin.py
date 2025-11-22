@@ -1,27 +1,8 @@
 from django.contrib import admin
 from .models import User, Team, Activity, Workout, Leaderboard
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'team')
-    search_fields = ('name', 'email')
-
-@admin.register(Team)
-class TeamAdmin(admin.ModelAdmin):
-    list_display = ('name', 'universe')
-    search_fields = ('name',)
-
-@admin.register(Activity)
-class ActivityAdmin(admin.ModelAdmin):
-    list_display = ('user', 'type', 'duration', 'date')
-    list_filter = ('type', 'date')
-
-@admin.register(Workout)
-class WorkoutAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description')
-    search_fields = ('name',)
-
-@admin.register(Leaderboard)
-class LeaderboardAdmin(admin.ModelAdmin):
-    list_display = ('user', 'points')
-    search_fields = ('user__name',)
+admin.site.register(User)
+admin.site.register(Team)
+admin.site.register(Activity)
+admin.site.register(Workout)
+admin.site.register(Leaderboard)

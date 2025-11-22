@@ -1,26 +1,27 @@
 from django.test import TestCase
 from .models import User, Team, Activity, Workout, Leaderboard
-from django.utils import timezone
 
-class ModelTests(TestCase):
-    def setUp(self):
-        self.team = Team.objects.create(name='Avengers', universe='Marvel')
-        self.user = User.objects.create(name='Tony Stark', email='tony@stark.com', team=self.team)
-        self.workout = Workout.objects.create(name='Pushups', description='Do 50 pushups')
-        self.activity = Activity.objects.create(user=self.user, type='Running', duration=30, date=timezone.now().date())
-        self.leaderboard = Leaderboard.objects.create(user=self.user, points=100)
+class UserModelTest(TestCase):
+    def test_create_user(self):
+        user = User.objects.create(name='Test', email='test@example.com', team='marvel')
+        self.assertEqual(user.name, 'Test')
 
-    def test_team_str(self):
-        self.assertEqual(str(self.team), 'Avengers')
+class TeamModelTest(TestCase):
+    def test_create_team(self):
+        team = Team.objects.create(name='marvel', members=['a@b.com'])
+        self.assertEqual(team.name, 'marvel')
 
-    def test_user_str(self):
-        self.assertEqual(str(self.user), 'Tony Stark')
+class ActivityModelTest(TestCase):
+    def test_create_activity(self):
+        activity = Activity.objects.create(user='test@example.com', activity='run', duration=30)
+        self.assertEqual(activity.activity, 'run')
 
-    def test_activity_str(self):
-        self.assertIn('Tony Stark', str(self.activity))
+class WorkoutModelTest(TestCase):
+    def test_create_workout(self):
+        workout = Workout.objects.create(user='test@example.com', workout='pushup', reps=10)
+        self.assertEqual(workout.reps, 10)
 
-    def test_workout_str(self):
-        self.assertEqual(str(self.workout), 'Pushups')
-
-    def test_leaderboard_str(self):
-        self.assertIn('Tony Stark', str(self.leaderboard))
+class LeaderboardModelTest(TestCase):
+    def test_create_leaderboard(self):
+        lb = Leaderboard.objects.create(team='marvel', points=100)
+        self.assertEqual(lb.team, 'marvel')

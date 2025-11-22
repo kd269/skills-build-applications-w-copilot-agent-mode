@@ -1,4 +1,5 @@
-from rest_framework import viewsets, routers
+
+from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User, Team, Activity, Workout, Leaderboard
@@ -25,7 +26,7 @@ class LeaderboardViewSet(viewsets.ModelViewSet):
     serializer_class = LeaderboardSerializer
 
 @api_view(['GET'])
-def api_root(request, format=None):
+def api_root(request):
     return Response({
         'users': '/api/users/',
         'teams': '/api/teams/',
